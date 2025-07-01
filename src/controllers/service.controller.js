@@ -10,8 +10,8 @@ exports.createService = async (req, res) => {
 
     const newService = new Service({
       title,
-      description
-      // createBy: req.user.userId Assuming user ID is available in req.user
+      description,
+      createBy: req.user.userId // Assuming req.user is set by authentication middleware
     })
 
     await newService.save()
