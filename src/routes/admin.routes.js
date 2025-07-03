@@ -34,4 +34,11 @@ router.post('/create-admin', verifyToken, verifyRole('superadmin'), async (req, 
   }
 })
 
+router.get('/dashboard', verifyToken, verifyRole('admin', 'superadmin'), async (req, res) => {
+  res.json({
+    message: 'Welcome to the admin dashboard',
+    role: req.user.role // Assuming req.user is set by verifyToken middleware
+  })
+})
+
 module.exports = router

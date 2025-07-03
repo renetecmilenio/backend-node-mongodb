@@ -10,7 +10,20 @@ const adminRoutes = require('./routes/admin.routes')
 
 // Middleware
 app.use(express.json())
+
+// Security headers
+const rateLimit = require('express-rate-limit')
+const { xss } = require('express-xss-sanitizer')
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // Limit each IP to 100 requests per windowMs
+})
+
+// middleware security
 app.use(helmet())
+app.use(limiter)
+app.use(xss())
 
 // Routes
 app.use('/api/auth', authRoutes)
