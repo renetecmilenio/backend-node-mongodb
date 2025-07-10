@@ -1,21 +1,18 @@
 const Service = require('../models/Service')
 
 exports.createService = async (req, res) => {
-  const { title, description } = req.body
-
   try {
-    if (!title) {
+    if (!req.body.title) {
       return res.status(400).json({ message: 'Title is required' })
     }
 
     const newService = new Service({
-      title,
-      description,
+      ...req.body,
       createBy: req.user.userId // Assuming req.user is set by authentication middleware
     })
 
-    await newService.save()
-    res.status(201).json({ message: 'Service created successfully', service: newService })
+    const saved = await newService.save()
+    res.status(201).json(saved)
   } catch (error) {
     console.error('Error creating service:', error)
     res.status(500).json({ message: 'Server error' })
