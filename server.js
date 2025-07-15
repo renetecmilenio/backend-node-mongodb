@@ -9,7 +9,11 @@
 // app.listen(port, () => {
 //   console.log(`Server is running on http://localhost:${port}`)
 // })
-require('dotenv').config()
+require('dotenv').config(
+  {
+    path: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env'
+  }
+)
 const app = require('./src/app')
 const connectDB = require('./src/config/db')
 

@@ -1,3 +1,7 @@
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env'
+})
+
 const express = require('express')
 const app = express()
 
@@ -33,6 +37,7 @@ app.use('/api/admin', adminRoutes)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
+  console.log('Hello World!')
 })
 
 module.exports = app
