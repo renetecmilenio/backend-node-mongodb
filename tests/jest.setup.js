@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const db = require('./setup')
 
 beforeAll(async () => {
@@ -19,3 +20,19 @@ afterAll(done => {
       })
     })
 }, 20000) // ⏱️ Máximo 20 segundos
+=======
+/* eslint-disable  */
+require('dotenv').config()
+const db = require('./setup.js')
+
+beforeAll(async () => {
+  await db.connect()
+})
+
+afterEach(async () => {
+  await db.clearDatabase()
+})
+afterAll(async () => {
+  await db.closeDatabase()
+})
+>>>>>>> d4e75b32c5873392989a5155d7adb24f8f81de50
