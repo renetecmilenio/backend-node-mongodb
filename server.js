@@ -5,7 +5,7 @@ import express, { json } from 'express';
 import connection from './config.js';
 
 // Importa funciones para manipular rutas de archivos
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 
 // Importa la función fileURLToPath para obtener la ruta del archivo en módulos ES
 import { fileURLToPath } from 'url';
@@ -24,6 +24,10 @@ app.disable('x-powered-by');
 
 // Usa el middleware json de Express para que las solicitudes y respuestas manejen JSON
 app.use(json());
+
+app.get("/", (req, res) => {
+  res.send("hola mundo")
+})
 
 // Rutas para servir archivos estáticos (HTML)
 app.get("/admin", (req, res) => {
