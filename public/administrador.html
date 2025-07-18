@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Discos</title>
+</head>
+
+<body>
+
+    <h1>Formulario de Discos</h1>
+
+    <!-- Formulario para agregar un nuevo disco -->
+    <h2>Agregar Nuevo Disco</h2>
+    <form id="formAgregar" onsubmit="agregarDisco(event)">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required><br><br>
+
+        <label for="artista">Artista:</label>
+        <input type="text" id="artista" required><br><br>
+
+        <label for="fecha_pub">Fecha de Publicación:</label>
+        <input type="number" id="fecha_pub" required><br><br>
+
+        <label for="discografica">Discográfica:</label>
+        <input type="text" id="discografica" required><br><br>
+
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" required><br><br>
+
+        <button type="submit">Agregar Disco</button>
+    </form>
+
+    <!-- Formulario para actualizar un disco completo -->
+    <h2>Actualizar Disco</h2>
+    <form id="formActualizar" onsubmit="actualizarDisco(event)">
+        <label for="idActualizar">ID Disco:</label>
+        <input type="number" id="idActualizar" required><br><br>
+
+        <label for="nombreActualizar">Nuevo Nombre:</label>
+        <input type="text" id="nombreActualizar" required><br><br>
+
+        <label for="artistaActualizar">Nuevo Artista:</label>
+        <input type="text" id="artistaActualizar" required><br><br>
+
+        <label for="fecha_pubActualizar">Nueva Fecha de Publicación:</label>
+        <input type="number" id="fecha_pubActualizar" required><br><br>
+
+        <label for="discograficaActualizar">Nueva Discográfica:</label>
+        <input type="text" id="discograficaActualizar" required><br><br>
+
+        <label for="precioActualizar">Nuevo Precio:</label>
+        <input type="number" id="precioActualizar" required><br><br>
+
+        <button type="submit">Actualizar Disco</button>
+    </form>
+
+    <!-- Formulario para actualizar parcialmente un disco -->
+    <h2>Actualizar Parcialmente Disco</h2>
+    <form id="formActualizarParcial" onsubmit="actualizarParcialDisco(event)">
+        <label for="idParcial">ID Disco:</label>
+        <input type="number" id="idParcial" required><br><br>
+
+        <label for="campo">Campo a Actualizar:</label>
+        <select id="campo" required>
+            <option value="nombre">Nombre</option>
+            <option value="artista">Artista</option>
+            <option value="fecha_pub">Fecha de Publicación</option>
+            <option value="discografica">Discográfica</option>
+            <option value="precio">Precio</option>
+        </select><br><br>
+
+        <label for="valor">Nuevo Valor:</label>
+        <input type="text" id="valor" required><br><br>
+
+        <button type="submit">Actualizar Parcialmente Disco</button>
+    </form>
+
+    <!-- Formulario para eliminar un disco -->
+    <h2>Eliminar Disco</h2>
+    <form id="formEliminar" onsubmit="eliminarDisco(event)">
+        <label for="idEliminar">ID Disco:</label>
+        <input type="number" id="idEliminar" required><br><br>
+
+        <button type="submit">Eliminar Disco</button>
+    </form>
+
+    <script>
+        // Función para agregar un nuevo disco
+        async function agregarDisco(event) {
+            event.preventDefault();
+            const disco = {
+                nombre: document.getElementById("nombre").value,
+                Artista: document.getElementById("artista").value,
+                fecha_pub: parseInt(document.getElementById("fecha_pub").value),
+                Discografica: document.getElementById("discografica").value,
+                Precio: parseInt(document.getElementById("precio").value),
+            };
+
+            const response = await fetch('http://localhost:3000/discos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(disco),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert("Disco creado con ID: " + data.id);
+            } else {
+                alert("Error al crear el disco");
+            }
+        }
+
+        // Función para actualizar un disco
+        async function actualizarDisco(event) {
+            event.preventDefault();
+            const id = document.getElementById("idActualizar").value;
+            const disco = {
+                nombre: document.getElementById("nombreActualizar").value,
+                Artista: document.getElementById("artistaActualizar").value,
+                fecha_pub: parseInt(document.getElementById("fecha_pubActualizar").value),
+                Discografica: document.getElementById("discograficaActualizar").value,
+                Precio: parseInt(document.getElementById("precioActualizar").value),
+            };
+
+            const response = await fetch(`http://localhost:3000/discos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(disco),
+            });
+
+            if (response.ok) {
+                alert("Disco actualizado");
+            } else {
+                alert("Error al actualizar el disco");
+            }
+        }
+
+        // Función para actualizar parcialmente un disco
+        async function actualizarParcialDisco(event) {
+            event.preventDefault();
+            const id = document.getElementById("idParcial").value;
+            const campo = document.getElementById("campo").value;
+            const valor = document.getElementById("valor").value;
+
+            const cambios = {};
+            cambios[campo] = valor;
+
+            const response = await fetch(`http://localhost:3000/discos/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cambios),
+            });
+
+            if (response.ok) {
+                alert("Disco actualizado parcialmente");
+            } else {
+                alert("Error al actualizar el disco parcialmente");
+            }
+        }
+
+        // Función para eliminar un disco
+        async function eliminarDisco(event) {
+            event.preventDefault();
+            const id = document.getElementById("idEliminar").value;
+
+            const response = await fetch(`http://localhost:3000/discos/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Disco eliminado");
+            } else {
+                alert("Error al eliminar el disco");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

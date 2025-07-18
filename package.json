@@ -1,0 +1,19 @@
+{
+  "name": "tenma5-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": " node conection.js",
+    "start:serv": " node --watch  server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  },
+  "type": "module",
+  "description": ""
+}
